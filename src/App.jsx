@@ -41,6 +41,7 @@ export default function App() {
       setOtherCityItemDetails(current);
     }
   };
+
   const initFunction = async () => {
     setIsLoading(true);
     await fetchTime();
