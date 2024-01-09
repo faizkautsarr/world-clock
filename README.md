@@ -1,4 +1,4 @@
-# Lastfm Project
+# World Clock Project
 
 World Clock Project
 
