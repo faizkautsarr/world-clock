@@ -1,8 +1,25 @@
-# React + Vite
+# Lastfm Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+World Clock Project
 
-Currently, two official plugins are available:
+## API Used
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The project utilizes the [https://worldtimeapi.org/api/timezone](https://worldtimeapi.org/api/timezone) for fetching the clock data.
+
+## Demo
+
+Check out the live demo of the project [here](https://world-clock-opal.vercel.app/).
+
+## How to Install and Run
+
+```bash
+
+cd world-clock
+
+npm install
+
+npm run dev
+
+http://localhost/:port
+
+```
