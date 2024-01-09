@@ -2,7 +2,7 @@ import React from "react";
 
 const LocalTimeCard = ({ city, abbreviation, formattedTime }) => {
   return (
-    <div className="flex w-full flex-col justify-center items-center my-12">
+    <div className="flex w-full flex-col justify-center items-center my-8">
       <div
         className="w-52 h-52 flex flex-col justify-center items-center rounded-2xl"
         style={{ background: "#323232" }}

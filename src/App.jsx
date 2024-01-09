@@ -42,12 +42,6 @@ export default function App() {
     }
   };
 
-  const initFunction = async () => {
-    setIsLoading(true);
-    await fetchTime();
-    await fetchOtherCityTimes();
-    setIsLoading(false);
-  };
   const fetchTime = async () => {
     try {
       // fetch Jakarta Time
@@ -95,6 +89,13 @@ export default function App() {
     }
   };
 
+  const initFunction = async () => {
+    setIsLoading(true);
+    await fetchTime();
+    await fetchOtherCityTimes();
+    setIsLoading(false);
+  };
+
   useEffect(() => {
     initFunction();
 
@@ -133,6 +134,10 @@ export default function App() {
     <div>
       {!isLoading && (
         <>
+          <div className="text-3xl text-white text-center font-mono mt-8">
+            {" "}
+            World Clock
+          </div>
           <LocalTimeCard
             city={localInfo.city}
             abbreviation={localInfo.abbreviation}
