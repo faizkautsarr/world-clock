@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import { fetchLocalTime, fetchCityTime } from "./services/api";
 import { cities } from "./utils/constants";
-import { formatTime, formatHoursDifference } from "./utils/formatter";
+import { formatTime } from "./utils/formatter";
+import LocalTimeCard from "./views/components/LocalTimeCard";
+import OtherTimeCard from "./views/components/OtherTimeCard";
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(false);
@@ -10,7 +12,6 @@ export default function App() {
     city: "",
     abbreviation: "",
     time: "",
-    notes: "local time",
     offset: "",
   });
   const [otherCityItemsDetail, setOtherCityItemDetails] = useState([]);
@@ -79,6 +80,7 @@ export default function App() {
             timezone: city.name,
             isVisible: city.isVisible,
             offset: cityData.utc_offset,
+            notes: city.notes,
           };
         } catch (error) {
           console.error(`Error fetching ${city} time:`, error);
@@ -130,95 +132,22 @@ export default function App() {
     <div>
       {!isLoading && (
         <>
-          <div className="flex w-full flex-col justify-center items-center my-12">
-            <div
-              className="w-52 h-52 flex flex-col justify-center items-center rounded-2xl"
-              style={{ background: "#323232" }}
-            >
-              <div className="font-mono text-md text-white">
-                {localInfo.city} ({localInfo.abbreviation})
-              </div>
-              <div
-                className="font-mono text-xs mb-4"
-                style={{ color: "#929292" }}
-              >
-                local time
-              </div>
-              <div
-                className="text-white text-4xl"
-                style={{
-                  fontFamily: "'Orbitron', sans-serif",
-                  letterSpacing: "2px",
-                }}
-              >
-                {formatTime(localInfo.time, localInfo.timezone)}
-              </div>
-            </div>
-          </div>
+          <LocalTimeCard
+            city={localInfo.city}
+            abbreviation={localInfo.abbreviation}
+            formattedTime={formatTime(localInfo.time, localInfo.timezone)}
+          />
 
           <div className="w-full flex flex-wrap justify-center">
             {otherCityItemsDetail
               .filter((city) => city.isVisible)
               .map((filteredCity) => (
-                <div
-                  className="flex justify-center mb-8 card"
-                  key={filteredCity.city}
-                >
-                  <div
-                    className="w-52 h-52 flex flex-col justify-around items-center rounded-2xl"
-                    style={{ background: "#323232" }}
-                  >
-                    <div className="w-full flex flex-col items-center relative">
-                      <i
-                        onClick={() => handleDelete(filteredCity.name)}
-                        className="material-icons text-md w-4 mr-2 text-red-600 absolute right-2"
-                      >
-                        delete
-                      </i>
-                      <div
-                        className="font-mono text-md"
-                        style={{ color: "#a2a2a2" }}
-                      >
-                        {filteredCity.city}
-                      </div>
-                      <div
-                        className="font-mono text-xs"
-                        style={{ color: "#929292" }}
-                      >
-                        notes (max 20)
-                      </div>
-                    </div>
-
-                    <div
-                      className="text-white text-4xl"
-                      style={{
-                        fontFamily: "'Orbitron', sans-serif",
-                        letterSpacing: "2px",
-                      }}
-                    >
-                      {formatTime(filteredCity.time, filteredCity.timezone)}
-                    </div>
-
-                    <div className="w-full flex flex-col items-center">
-                      <div
-                        className="font-mono text-md"
-                        style={{ color: "#a2a2a2" }}
-                      >
-                        {filteredCity.abbreviation}
-                      </div>
-                      <div
-                        className="font-mono text-xs text-center"
-                        style={{ color: "#a2a2a2" }}
-                      >
-                        {formatHoursDifference(
-                          filteredCity.offset,
-                          localInfo.offset,
-                          localInfo.city
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <OtherTimeCard
+                  key={filteredCity.name}
+                  filteredCity={filteredCity}
+                  localInfo={localInfo}
+                  handleDelete={handleDelete}
+                />
               ))}
           </div>
         </>

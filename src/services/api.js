@@ -1,5 +1,4 @@
 import axios from "axios";
-
 const fetchLocalTime = async () => {
   try {
     const response = await axios.get(

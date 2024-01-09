@@ -26,6 +26,6 @@ export const formatHoursDifference = (offset1, offset2, city) => {
   } else if (result === 0) {
     return `same with ${city}`;
   } else {
-    return `${Math.abs(result)} behind ${city}`;
+    return `${Math.abs(result)} hours behind ${city}`;
   }
 };
