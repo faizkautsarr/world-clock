@@ -10,7 +10,6 @@ export const formatTime = (date, timezone) => {
 };
 
 export const formatHoursDifference = (offset1, offset2, city) => {
-  console.log(offset1, offset2);
   const parseOffset = (offset) => {
     const hours = parseInt(offset, 10);
     return hours;

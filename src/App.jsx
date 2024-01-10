@@ -5,9 +5,15 @@ import { cities } from "./utils/constants";
 import { formatTime } from "./utils/formatter";
 import LocalTimeCard from "./views/components/LocalTimeCard";
 import OtherTimeCard from "./views/components/OtherTimeCard";
+import AddCityModalContent from "./views/components/AddCityModalContent";
+import Modal from "./views/components/Modal";
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [notesInput, setNotesInput] = useState("");
+  const [cityInput, setCityInput] = useState("");
+
   const [localInfo, setLocalInfo] = useState({
     city: "",
     abbreviation: "",
@@ -15,6 +21,21 @@ export default function App() {
     offset: "",
   });
   const [otherCityItemsDetail, setOtherCityItemDetails] = useState([]);
+
+  const handleOverlayClick = (event) => {
+    // Close the modal only if the click is on the overlay and not on the modal content
+    if (event.target.classList.contains("modal-overlay")) {
+      closeModal();
+    }
+  };
+  const closeModal = () => {
+    document.body.style.overflow = "visible";
+    setShowModal(false);
+  };
+  const openModal = () => {
+    document.body.style.overflow = "hidden";
+    setShowModal(true);
+  };
 
   const handleSelectChange = (event) => {
     const selectedValue = event.target.value;
@@ -29,6 +50,23 @@ export default function App() {
       current[selectedIndex].isVisible = true;
       setOtherCityItemDetails(current);
     }
+  };
+
+  const handleSubmitAddCity = () => {
+    const input =
+      cityInput === ""
+        ? otherCityItemsDetail.filter((city) => !city.isVisible)[0].name
+        : cityInput;
+    const current = [...otherCityItemsDetail];
+    const selectedIndex = current.findIndex((item) => item.name === input);
+
+    if (selectedIndex !== -1) {
+      current[selectedIndex].isVisible = true;
+      current[selectedIndex].notes = notesInput;
+      setOtherCityItemDetails(current);
+    }
+    closeModal();
+    setNotesInput("");
   };
 
   const handleDelete = (name) => {
@@ -135,7 +173,6 @@ export default function App() {
       {!isLoading && (
         <>
           <div className="text-3xl text-white text-center font-mono mt-8">
-            {" "}
             World Clock
           </div>
           <LocalTimeCard
@@ -156,6 +193,39 @@ export default function App() {
                 />
               ))}
           </div>
+
+          <div
+            onClick={() => {
+              if (
+                otherCityItemsDetail.filter((city) => city.isVisible).length < 4
+              ) {
+                openModal();
+              }
+            }}
+            className={` ${
+              otherCityItemsDetail.filter((city) => city.isVisible).length < 4
+                ? ""
+                : "opacity-30"
+            } text-sm flex justify-center items-center text-white text-center font-mono mt-8 fixed bottom-4 left-0 right-0 bg-blue-600 p-2 w-40 rounded-2xl mx-auto`}
+          >
+            <i className="material-icons w-6 mr-2">add_circle</i>
+            <div> add city </div>
+          </div>
+
+          {showModal && (
+            <Modal
+              closeModal={closeModal}
+              handleOverlayClick={handleOverlayClick}
+            >
+              <AddCityModalContent
+                otherCityItemsDetail={otherCityItemsDetail}
+                setNotesInput={setNotesInput}
+                setCityInput={setCityInput}
+                handleSubmitAddCity={handleSubmitAddCity}
+                notesInput={notesInput}
+              />
+            </Modal>
+          )}
         </>
       )}
     </div>

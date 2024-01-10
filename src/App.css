@@ -1,1 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Orbitron&display=swap");
+
+.form-input:focus {
+  outline: none;
+}
